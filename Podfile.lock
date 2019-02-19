@@ -4,22 +4,26 @@ PODS:
     - Alamofire (~> 4.7)
     - ObjectMapper (~> 3.4)
   - ObjectMapper (3.4.1)
+  - Presentr (1.9)
 
 DEPENDENCIES:
   - Alamofire
   - AlamofireObjectMapper
+  - Presentr
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireObjectMapper
     - ObjectMapper
+    - Presentr
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireObjectMapper: 92b6ce2423a9d159e686f6a1d514a009bf903ddc
   ObjectMapper: 5311bd50ca732930959e7ca1a2de43ab823a5ced
+  Presentr: 7078d7eb5d1661ebeaae60c9e42a1e534de1b993
 
-PODFILE CHECKSUM: 5634f9a36926d46f169e8d567e72bf5b38f90f94
+PODFILE CHECKSUM: 10fbf42388d17b4da8f3b791259f4a42a7e24ab7
 
 COCOAPODS: 1.5.3

@@ -9,10 +9,13 @@
 import UIKit
 
 class Player: UIViewController {
-
+    var test = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Player")
+        
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print(test)
+    }
 }

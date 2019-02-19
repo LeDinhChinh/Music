@@ -39,6 +39,7 @@ struct Track: Mappable {
     var artwork_url = ""
     var genre = ""
     var title = ""
+    var uri = ""
     var user: User?
     
     init?(map: Map) {
@@ -50,6 +51,7 @@ struct Track: Mappable {
         genre <- map["genre"]
         title <- map["title"]
         user <- map["user"]
+        uri <- map["uri"]
     }
 }
 
