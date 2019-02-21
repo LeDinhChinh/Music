@@ -10,7 +10,11 @@
 		2E86ABCDE0CD367410AF75A1 /* Pods_MusicUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96ECD94C14E68ABD671D9AC /* Pods_MusicUITests.framework */; };
 		5AE289CA1EB4E5C2BD7A61B4 /* Pods_MusicTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F03D1C79F858FB6557DB5D5 /* Pods_MusicTests.framework */; };
 		84275752221E93AE00716AB0 /* DetailArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84275751221E93AE00716AB0 /* DetailArtist.swift */; };
-		844B7BD7221CC12500205A6B /* TracksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B7BD6221CC12500205A6B /* TracksTableViewCell.swift */; };
+		84275757221F0CC800716AB0 /* extensionUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84275756221F0CC800716AB0 /* extensionUIView.swift */; };
+		84275759221F0D5A00716AB0 /* UCBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84275758221F0D5A00716AB0 /* UCBaseViewController.swift */; };
+		8427575B221F0D7600716AB0 /* UIView+Borders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8427575A221F0D7600716AB0 /* UIView+Borders.swift */; };
+		8427575E221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8427575D221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift */; };
+		844B7BD7221CC12500205A6B /* TracksGenreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B7BD6221CC12500205A6B /* TracksGenreTableViewCell.swift */; };
 		844B7BD9221CC22200205A6B /* ListTrackByGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B7BD8221CC22200205A6B /* ListTrackByGenre.swift */; };
 		84BBDD00221C376400ACE3C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDCFF221C376400ACE3C6 /* AppDelegate.swift */; };
 		84BBDD02221C376400ACE3C6 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDD01221C376400ACE3C6 /* Home.swift */; };
@@ -54,7 +58,11 @@
 		75E1281C065BF91FBECA6D00 /* Pods-MusicTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MusicTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MusicTests/Pods-MusicTests.release.xcconfig"; sourceTree = "<group>"; };
 		7F03D1C79F858FB6557DB5D5 /* Pods_MusicTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MusicTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84275751221E93AE00716AB0 /* DetailArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailArtist.swift; sourceTree = "<group>"; };
-		844B7BD6221CC12500205A6B /* TracksTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableViewCell.swift; sourceTree = "<group>"; };
+		84275756221F0CC800716AB0 /* extensionUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extensionUIView.swift; sourceTree = "<group>"; };
+		84275758221F0D5A00716AB0 /* UCBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCBaseViewController.swift; sourceTree = "<group>"; };
+		8427575A221F0D7600716AB0 /* UIView+Borders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Borders.swift"; sourceTree = "<group>"; };
+		8427575D221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackFavoriteTableViewCell.swift; sourceTree = "<group>"; };
+		844B7BD6221CC12500205A6B /* TracksGenreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksGenreTableViewCell.swift; sourceTree = "<group>"; };
 		844B7BD8221CC22200205A6B /* ListTrackByGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTrackByGenre.swift; sourceTree = "<group>"; };
 		84BBDCFC221C376400ACE3C6 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BBDCFF221C376400ACE3C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +121,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8427575C221F0D8600716AB0 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				84275756221F0CC800716AB0 /* extensionUIView.swift */,
+				8427575A221F0D7600716AB0 /* UIView+Borders.swift */,
+				84275758221F0D5A00716AB0 /* UCBaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		84BBDCF3221C376400ACE3C6 = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +156,7 @@
 		84BBDCFE221C376400ACE3C6 /* Music */ = {
 			isa = PBXGroup;
 			children = (
+				8427575C221F0D8600716AB0 /* Base */,
 				84BBDD2E221C383000ACE3C6 /* Model */,
 				84BBDD2F221C383500ACE3C6 /* Views */,
 				84BBDD2D221C382800ACE3C6 /* Controller */,
@@ -189,7 +208,8 @@
 				84BBDD3D221C5B5D00ACE3C6 /* GenreCollectionViewCell.swift */,
 				84BBDD3F221C77D400ACE3C6 /* TopArtistCollectionViewCell.swift */,
 				84BBDD41221C91D900ACE3C6 /* TopMusicCollectionViewCell.swift */,
-				844B7BD6221CC12500205A6B /* TracksTableViewCell.swift */,
+				844B7BD6221CC12500205A6B /* TracksGenreTableViewCell.swift */,
+				8427575D221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -465,19 +485,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8427575E221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift in Sources */,
 				84BBDD35221C424800ACE3C6 /* Browser.swift in Sources */,
 				84BBDD39221C47CA00ACE3C6 /* InformationTracks.swift in Sources */,
 				84BBDD42221C91D900ACE3C6 /* TopMusicCollectionViewCell.swift in Sources */,
 				84BBDD33221C423D00ACE3C6 /* Player.swift in Sources */,
 				84BBDD31221C422E00ACE3C6 /* Favorite.swift in Sources */,
+				84275757221F0CC800716AB0 /* extensionUIView.swift in Sources */,
 				84275752221E93AE00716AB0 /* DetailArtist.swift in Sources */,
+				84275759221F0D5A00716AB0 /* UCBaseViewController.swift in Sources */,
 				84BBDD02221C376400ACE3C6 /* Home.swift in Sources */,
 				84BBDD40221C77D400ACE3C6 /* TopArtistCollectionViewCell.swift in Sources */,
+				8427575B221F0D7600716AB0 /* UIView+Borders.swift in Sources */,
 				84BBDD00221C376400ACE3C6 /* AppDelegate.swift in Sources */,
 				84BBDD3C221C4D2900ACE3C6 /* API.swift in Sources */,
 				84BBDD3E221C5B5D00ACE3C6 /* GenreCollectionViewCell.swift in Sources */,
 				84BBDD37221C425200ACE3C6 /* Playlist.swift in Sources */,
-				844B7BD7221CC12500205A6B /* TracksTableViewCell.swift in Sources */,
+				844B7BD7221CC12500205A6B /* TracksGenreTableViewCell.swift in Sources */,
 				844B7BD9221CC22200205A6B /* ListTrackByGenre.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

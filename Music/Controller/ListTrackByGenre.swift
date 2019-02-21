@@ -78,7 +78,7 @@ extension ListTrackByGenre: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell") as? TracksTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "TrackGenreCell") as? TracksGenreTableViewCell {
             if let artWork_url = URL(string: artWork_url[indexPath.row]),
                let data = try? Data(contentsOf: artWork_url) {
                 cell.imageTrack.image = UIImage(data: data)
@@ -93,10 +93,6 @@ extension ListTrackByGenre: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 10
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
