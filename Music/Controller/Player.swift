@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  Player.swift
 //  Music
 //
 //  Created by Admin on 2/19/19.
@@ -8,13 +8,14 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class Player: UIViewController {
+    var test = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
     }
-
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print(test)
+    }
 }
-
