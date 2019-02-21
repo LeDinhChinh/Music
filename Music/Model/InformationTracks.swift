@@ -66,3 +66,27 @@ struct User: Mappable {
         full_name <- map["full_name"]
     }
 }
+
+struct Errors: Mappable {
+    var errors = [Error_message]()
+    
+    init?(map: Map) {
+        
+    }
+    
+    mutating func mapping(map: Map) {
+        errors <- map["errors"]
+    }
+}
+
+struct Error_message: Mappable {
+    var error_message = ""
+    
+    init?(map: Map) {
+        
+    }
+    
+    mutating func mapping(map: Map) {
+        error_message <- map["error_message"]
+    }
+}

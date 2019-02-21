@@ -10,15 +10,20 @@ import UIKit
 import Alamofire
 import AlamofireObjectMapper
 
-class Home: UIViewController {
+final class Home: UIViewController {
     
     @IBOutlet weak var genreCollectionView: UICollectionView!
     @IBOutlet weak var topArtistCollectionView: UICollectionView!
     @IBOutlet weak var topMusicCollectionView: UICollectionView!
     
-    let genreArr = ["hiphop","classical","audio","country","alternativerock","ambient"]
-    let topArtistArr = ["Avicii", "Martin Garrix", "Armin Van Burien", "Ran-D", "Headhunter", "Kshmr", "Hardwell", "Skrillex", "David Gueta", "Zedd"]
-    
+    private let genreArr = ["hiphop","classical","audio","country","alternativerock","ambient"]
+    private let topArtistArr = ["Avicii", "Martin Garrix", "Armin Van Burien", "Ran-D", "Headhunter", "Kshmr", "Hardwell", "Skrillex", "David Gueta", "Zedd"]
+    private var artWork_url: [String] = []
+    private var genre: [String] = []
+    private var titles: [String] = []
+    private var uri: [String] = []
+    private var nameArtist: [String] = []
+    private var numberOfTrack = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         genreCollectionView.delegate = self
@@ -55,21 +60,18 @@ extension Home: UICollectionViewDataSource, UICollectionViewDelegate, UICollecti
                 return cell
             }
         } else if collectionView == self.topMusicCollectionView {
-            guard let url_classical = URL(string: classical_api_1) else {
+            guard let url_hiphop = URL(string: hiphop_rap_api_1) else {
                 fatalError("")
             }
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "topMusicCell", for: indexPath) as? TopMusicCollectionViewCell {
-                Alamofire.request(url_classical).responseObject { (response: DataResponse<TracksResponse>) in
+                Alamofire.request(url_hiphop).responseObject { (response: DataResponse<TracksResponse>) in
                     var artWork_url: [String] = []
                     var genre: [String] = []
                     var titles: [String] = []
                     var uri: [String] = []
                     var nameArtist: [String] = []
-                    guard let value = response.value else {
-                        return
-                    }
-                    
-                    for i in 0..<value.collection.count {
+                    var numberOfTrack = 0
+                    for i in 0..<10 {
                         guard let track = response.value?.collection[i].track else {
                             return
                         }
@@ -79,14 +81,21 @@ extension Home: UICollectionViewDataSource, UICollectionViewDelegate, UICollecti
                         titles.append(track.title)
                         uri.append(track.uri)
                         nameArtist.append((track.user?.full_name)!)
+                        numberOfTrack = (response.value?.collection.count)! - 1
                     }
-                    if let artWork_url = URL(string: artWork_url[indexPath.row]),
+                    self.artWork_url = artWork_url
+                    self.genre = genre
+                    self.titles = titles
+                    self.uri = uri
+                    self.nameArtist = nameArtist
+                    self.numberOfTrack = numberOfTrack
+                    if let artWork_url = URL(string: self.artWork_url[indexPath.row]),
                         let data = try? Data(contentsOf: artWork_url) {
                         cell.imageTopMusic.image = UIImage(data: data)
                     }
                     
-                    cell.lblTitleTrack.text = titles[indexPath.row]
-                    cell.lblNameArtist.text = nameArtist[indexPath.row]
+                    cell.lblTitleTrack.text = self.titles[indexPath.row]
+                    cell.lblNameArtist.text = self.nameArtist[indexPath.row]
                 }
                 return cell
             }
@@ -154,8 +163,16 @@ extension Home: UICollectionViewDataSource, UICollectionViewDelegate, UICollecti
                 self.navigationController?.pushViewController(DetailArtistVC, animated: true)
             }
         } else if collectionView == self.topMusicCollectionView {
-            let player = self.tabBarController?.viewControllers?[2] as! Player
-            player.test = "test"
+            let playerVC = self.tabBarController?.viewControllers?[2] as! Player
+            playerVC.titles = self.titles
+            playerVC.stringNameArtist = self.nameArtist
+            playerVC.artWork_url = self.artWork_url
+            playerVC.uri = self.uri
+            playerVC.currentPositionOfTrackInArrTrack = indexPath.row
+            playerVC.numberOfTrack = numberOfTrack
+            DispatchQueue.main.async {
+                playerVC.willPlayer()
+            }
             tabBarController?.selectedIndex = 2
         }
     }

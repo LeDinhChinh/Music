@@ -9,9 +9,8 @@
 import UIKit
 import Alamofire
 import AlamofireObjectMapper
-import Presentr
 
-class ListTrackByGenre: UIViewController {
+final class ListTrackByGenre: UIViewController {
 
     @IBOutlet weak var listTrackByGenreTableView: UITableView!
     @IBOutlet weak var banerImage: UIImageView!
@@ -58,18 +57,6 @@ class ListTrackByGenre: UIViewController {
             self.listTrackByGenreTableView.reloadData()
         }
     }
-    
-    func setUpViewMoreButton() {
-        view.addSubview(contentView)
-    }
-    
-    let contentView: UIView = {
-        let view = UIView(frame: CGRect(x: 223, y: 0.0, width: 100, height: 100))
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.lightGray.cgColor
-        return view
-    }()
-    
 }
 
 extension ListTrackByGenre: UITableViewDataSource, UITableViewDelegate {
@@ -78,7 +65,7 @@ extension ListTrackByGenre: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell") as? TracksTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "TrackGenreCell") as? TracksGenreTableViewCell {
             if let artWork_url = URL(string: artWork_url[indexPath.row]),
                let data = try? Data(contentsOf: artWork_url) {
                 cell.imageTrack.image = UIImage(data: data)
@@ -95,11 +82,16 @@ extension ListTrackByGenre: UITableViewDataSource, UITableViewDelegate {
         return 50
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 10
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let playerVC = self.tabBarController?.viewControllers?[2] as! Player
+        playerVC.titles = self.titles
+        playerVC.stringNameArtist = self.nameArtist
+        playerVC.artWork_url = self.artWork_url
+        playerVC.uri = self.uri
+        playerVC.currentPositionOfTrackInArrTrack = indexPath.row
+        DispatchQueue.main.async {
+            playerVC.willPlayer()
+        }
         tabBarController?.selectedIndex = 2
     }
 }
