@@ -261,26 +261,39 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="125" translatesAutoresizingMaskIntoConstraints="NO" id="rCr-d3-Y8K">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="rCr-d3-Y8K">
                                         <rect key="frame" x="0.0" y="626.5" width="380" height="31.5"/>
                                         <subviews>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IbB-OY-dqa">
-                                                <rect key="frame" x="0.0" y="0.0" width="43.5" height="31.5"/>
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IbB-OY-dqa">
+                                                <rect key="frame" x="0.0" y="0.0" width="89" height="31.5"/>
                                                 <state key="normal" image="update-arrows (1)"/>
                                                 <connections>
                                                     <action selector="loop:" destination="itd-tw-jAP" eventType="touchUpInside" id="FSo-xu-q5q"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lzp-RC-Aqu">
-                                                <rect key="frame" x="168.5" y="0.0" width="43" height="31.5"/>
+                                                <rect key="frame" x="97" y="0.0" width="89" height="31.5"/>
                                                 <state key="normal" image="favorite-heart-button (1)">
                                                     <color key="titleColor" red="1" green="0.28367542690000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="titleShadowColor" red="1" green="0.28367542690000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="favoriteTrack:" destination="itd-tw-jAP" eventType="touchUpInside" id="LJZ-lu-M06"/>
+                                                </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEf-rZ-Mac">
-                                                <rect key="frame" x="336.5" y="0.0" width="43.5" height="31.5"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEf-rZ-Mac">
+                                                <rect key="frame" x="194" y="0.0" width="89" height="31.5"/>
                                                 <state key="normal" image="shuffle-mode-arrows (1)"/>
+                                                <connections>
+                                                    <action selector="shuffleTrack:" destination="itd-tw-jAP" eventType="touchUpInside" id="M6a-TW-WPm"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aiB-4I-jEq">
+                                                <rect key="frame" x="291" y="0.0" width="89" height="31.5"/>
+                                                <state key="normal" image="icons8-menu-vertical-50"/>
+                                                <connections>
+                                                    <action selector="option:" destination="itd-tw-jAP" eventType="touchUpInside" id="kZa-fG-oG3"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -307,10 +320,11 @@
                     <connections>
                         <outlet property="currentTimeTrack" destination="wha-ZP-J97" id="Sr4-cs-DXE"/>
                         <outlet property="durationTimeTrack" destination="chh-HK-WP9" id="BK4-5E-nE2"/>
-                        <outlet property="favorite" destination="lzp-RC-Aqu" id="DH1-jk-ok1"/>
+                        <outlet property="favorite" destination="lzp-RC-Aqu" id="PsB-Ph-hAE"/>
                         <outlet property="loop" destination="IbB-OY-dqa" id="div-bV-AJo"/>
                         <outlet property="nameArtist" destination="seX-eu-PPt" id="f6g-fo-ssZ"/>
                         <outlet property="nameTrack" destination="fq5-yD-Nse" id="gh7-GO-kSn"/>
+                        <outlet property="option" destination="aiB-4I-jEq" id="bVt-Ia-Cr7"/>
                         <outlet property="pauseOrPlayTrack" destination="5ub-f3-fns" id="b7M-gE-uaU"/>
                         <outlet property="shuffle" destination="hEf-rZ-Mac" id="aJP-ha-9sY"/>
                         <outlet property="timeTrackSlide" destination="yR8-Ef-eTP" id="8d0-H3-aOb"/>
@@ -592,7 +606,7 @@
                                                 </collectionViewFlowLayout>
                                                 <cells>
                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleAspectFit" reuseIdentifier="genreCell" id="aV9-wU-uWE" customClass="GenreCollectionViewCell" customModule="Music" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="3.5" width="120" height="89"/>
+                                                        <rect key="frame" x="0.0" y="4" width="120" height="89"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                                             <rect key="frame" x="0.0" y="0.0" width="120" height="89"/>
@@ -1132,6 +1146,7 @@ rR+wH70fwh/KH80f0h/aH90f7x/yH/cAAAAAAAACAQAAAAAAAABZAAAAAAAAAAAAAAAAAAAf+Q
         </image>
         <image name="favorite-heart-button (1)" width="24" height="24"/>
         <image name="hiphop" width="960" height="600"/>
+        <image name="icons8-menu-vertical-50" width="25" height="25"/>
         <image name="icons8-play-filled-50" width="50" height="50"/>
         <image name="icons8-record-48" width="48" height="48"/>
         <image name="icons8-skip-this-track-filled-50" width="50" height="50"/>

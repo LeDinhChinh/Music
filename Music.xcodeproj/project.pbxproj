@@ -16,6 +16,9 @@
 		8427575E221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8427575D221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift */; };
 		844B7BD7221CC12500205A6B /* TracksGenreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B7BD6221CC12500205A6B /* TracksGenreTableViewCell.swift */; };
 		844B7BD9221CC22200205A6B /* ListTrackByGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B7BD8221CC22200205A6B /* ListTrackByGenre.swift */; };
+		8460BD942223CD2B00AF7847 /* DataLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8460BD932223CD2B00AF7847 /* DataLocal.swift */; };
+		8460BD9F2223E58E00AF7847 /* FavoriteTracks.db in Resources */ = {isa = PBXBuildFile; fileRef = 8460BD9E2223E58A00AF7847 /* FavoriteTracks.db */; };
+		8460BDA22223F06700AF7847 /* FavoriteTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8460BDA12223F06700AF7847 /* FavoriteTrack.swift */; };
 		84BBDD00221C376400ACE3C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDCFF221C376400ACE3C6 /* AppDelegate.swift */; };
 		84BBDD02221C376400ACE3C6 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDD01221C376400ACE3C6 /* Home.swift */; };
 		84BBDD05221C376400ACE3C6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84BBDD03221C376400ACE3C6 /* Main.storyboard */; };
@@ -65,6 +68,9 @@
 		8427575D221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackFavoriteTableViewCell.swift; sourceTree = "<group>"; };
 		844B7BD6221CC12500205A6B /* TracksGenreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksGenreTableViewCell.swift; sourceTree = "<group>"; };
 		844B7BD8221CC22200205A6B /* ListTrackByGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTrackByGenre.swift; sourceTree = "<group>"; };
+		8460BD932223CD2B00AF7847 /* DataLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLocal.swift; sourceTree = "<group>"; };
+		8460BD9E2223E58A00AF7847 /* FavoriteTracks.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = FavoriteTracks.db; sourceTree = "<group>"; };
+		8460BDA12223F06700AF7847 /* FavoriteTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTrack.swift; sourceTree = "<group>"; };
 		84BBDCFC221C376400ACE3C6 /* Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Music.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BBDCFF221C376400ACE3C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84BBDD01221C376400ACE3C6 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -134,6 +140,22 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		8460BD8E2223CAE700AF7847 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				8460BD9E2223E58A00AF7847 /* FavoriteTracks.db */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		8460BD912223CCFC00AF7847 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				8460BD932223CD2B00AF7847 /* DataLocal.swift */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		84BBDCF3221C376400ACE3C6 = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +181,8 @@
 		84BBDCFE221C376400ACE3C6 /* Music */ = {
 			isa = PBXGroup;
 			children = (
+				8460BD912223CCFC00AF7847 /* Resource */,
+				8460BD8E2223CAE700AF7847 /* Database */,
 				8427575C221F0D8600716AB0 /* Base */,
 				84BBDD2E221C383000ACE3C6 /* Model */,
 				84BBDD2F221C383500ACE3C6 /* Views */,
@@ -213,6 +237,7 @@
 				84BBDD41221C91D900ACE3C6 /* TopMusicCollectionViewCell.swift */,
 				844B7BD6221CC12500205A6B /* TracksGenreTableViewCell.swift */,
 				8427575D221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift */,
+				8460BDA12223F06700AF7847 /* FavoriteTrack.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -364,6 +389,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8460BD9F2223E58E00AF7847 /* FavoriteTracks.db in Resources */,
 				84BBDD0A221C376500ACE3C6 /* LaunchScreen.storyboard in Resources */,
 				84BBDD07221C376500ACE3C6 /* Assets.xcassets in Resources */,
 				84BBDD05221C376400ACE3C6 /* Main.storyboard in Resources */,
@@ -442,8 +468,8 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Music/Pods-Music-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireObjectMapper/AlamofireObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
-				"${BUILT_PRODUCTS_DIR}/Presentr/Presentr.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -451,8 +477,8 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Presentr.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -490,6 +516,7 @@
 			files = (
 				8427575E221F15BE00716AB0 /* TrackFavoriteTableViewCell.swift in Sources */,
 				84BBDD35221C424800ACE3C6 /* Browser.swift in Sources */,
+				8460BDA22223F06700AF7847 /* FavoriteTrack.swift in Sources */,
 				84BBDD39221C47CA00ACE3C6 /* InformationTracks.swift in Sources */,
 				84BBDD42221C91D900ACE3C6 /* TopMusicCollectionViewCell.swift in Sources */,
 				84BBDD33221C423D00ACE3C6 /* Player.swift in Sources */,
@@ -499,6 +526,7 @@
 				84275759221F0D5A00716AB0 /* UCBaseViewController.swift in Sources */,
 				84BBDD02221C376400ACE3C6 /* Home.swift in Sources */,
 				84BBDD40221C77D400ACE3C6 /* TopArtistCollectionViewCell.swift in Sources */,
+				8460BD942223CD2B00AF7847 /* DataLocal.swift in Sources */,
 				8427575B221F0D7600716AB0 /* UIView+Borders.swift in Sources */,
 				84BBDD00221C376400ACE3C6 /* AppDelegate.swift in Sources */,
 				84BBDD3C221C4D2900ACE3C6 /* API.swift in Sources */,

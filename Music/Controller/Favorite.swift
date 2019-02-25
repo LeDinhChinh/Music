@@ -13,8 +13,12 @@ class Favorite: UIViewController {
     @IBOutlet weak var viewFavorite: UIView!
     @IBOutlet weak var listTrackByFavorite: UITableView!
     
+    var arrFavoriteTrack = [FavoriteTracks]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        arrFavoriteTrack = DataLocal.getDataFavoriteTrack()
+        print(arrFavoriteTrack.count)
         listTrackByFavorite.separatorStyle = .none
         viewFavorite.addBorder(side: UIView.ViewSide.bottom, thickness: 1, color: UIColor.red)
     }

@@ -70,7 +70,7 @@ extension Home: UICollectionViewDataSource, UICollectionViewDelegate, UICollecti
                     var titles: [String] = []
                     var uri: [String] = []
                     var nameArtist: [String] = []
-                    var numberOfTrack = 0
+                    let numberOfTrack = 9
                     for i in 0..<10 {
                         guard let track = response.value?.collection[i].track else {
                             return
@@ -81,8 +81,8 @@ extension Home: UICollectionViewDataSource, UICollectionViewDelegate, UICollecti
                         titles.append(track.title)
                         uri.append(track.uri)
                         nameArtist.append((track.user?.full_name)!)
-                        numberOfTrack = (response.value?.collection.count)! - 1
                     }
+                    print(genre)
                     self.artWork_url = artWork_url
                     self.genre = genre
                     self.titles = titles
@@ -168,6 +168,7 @@ extension Home: UICollectionViewDataSource, UICollectionViewDelegate, UICollecti
             playerVC.stringNameArtist = self.nameArtist
             playerVC.artWork_url = self.artWork_url
             playerVC.uri = self.uri
+            playerVC.genre = self.genre
             playerVC.currentPositionOfTrackInArrTrack = indexPath.row
             playerVC.numberOfTrack = numberOfTrack
             DispatchQueue.main.async {

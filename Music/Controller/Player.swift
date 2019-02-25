@@ -24,10 +24,12 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
     @IBOutlet weak private var shuffle: UIButton!
     @IBOutlet weak private var pauseOrPlayTrack: UIButton!
     @IBOutlet weak private var loop: UIButton!
+    @IBOutlet weak private var option: UIButton!
     
     var error = false
     var numberOfTrack = 0
-    
+    var favoriteFlag = false
+    var shuffleTrackFlag = false
     var artWork_url: [String] = []
     var genre: [String] = []
     var titles: [String] = []
@@ -50,7 +52,6 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
         nameTrack.text = titles[currentPositionOfTrackInArrTrack]
         nameArtist.text = stringNameArtist[currentPositionOfTrackInArrTrack]
         
-        
         let url = URL(string: uri[currentPositionOfTrackInArrTrack] + id_client)
         Alamofire.request(url!).responseObject { (response :DataResponse<Errors>) in
             if let value = response.value {
@@ -62,6 +63,12 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
                     self.present(alert, animated: true, completion: nil)
                     return
                 }
+            }
+            let arrFavoriteTracks = DataLocal.getDataFavoriteTrack()
+            if self.isTrackFavorite(favoriteTrack: arrFavoriteTracks, url: self.uri[self.currentPositionOfTrackInArrTrack]) {
+                self.favorite.setImage(UIImage(named: "favorite"), for: UIControl.State.normal)
+            } else {
+                self.favorite.setImage(UIImage(named: "favorite-heart-button (1)"), for: UIControl.State.normal)
             }
             self.error = false
             do {
@@ -90,8 +97,13 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
         
     }
     
-    func passDataForPlayer(url: URL) {
-        
+    func isTrackFavorite(favoriteTrack: [FavoriteTracks], url: String) -> Bool {
+        for i in 0..<favoriteTrack.count {
+            if url == favoriteTrack[i].uri {
+                return true
+            }
+        }
+        return false
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
@@ -157,7 +169,12 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
             player?.stop()
         }
         if numberOfTrack > 0 {
-            if loopForOne == true {
+            if loopForOne {
+                willPlayer()
+                return
+            }
+            if shuffleTrackFlag {
+                currentPositionOfTrackInArrTrack = Int.random(in: 0..<10)
                 willPlayer()
                 return
             }
@@ -184,18 +201,40 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
         if loopAllTrack == true {
             loopForOne = true
             loopAllTrack = false
+            loop.setImage(UIImage(named: "icons8-1st-48"), for: UIControl.State.normal)
         } else if loopForOne == true {
             loopForOne = false
+            loop.setImage(UIImage(named: "update-arrows (1)"), for: UIControl.State.normal)
         } else {
             loopAllTrack = true
-        }
-        
-        if loopAllTrack == true {
             loop.setImage(UIImage(named: "icons8-reset-filled-48"), for: UIControl.State.normal)
-        } else if loopForOne == true {
-            loop.setImage(UIImage(named: "icons8-1st-48"), for: UIControl.State.normal)
-        } else {
-            loop.setImage(UIImage(named: "update-arrows (1)"), for: UIControl.State.normal)
         }
+    }
+    
+    @IBAction func favoriteTrack(_ sender: Any) {
+        if favoriteFlag == false {
+            if numberOfTrack >= 0 {
+                favoriteFlag = true
+                DataLocal.insertRecore(artWork_url[currentPositionOfTrackInArrTrack], genre[currentPositionOfTrackInArrTrack], titles[currentPositionOfTrackInArrTrack], uri[currentPositionOfTrackInArrTrack], stringNameArtist[currentPositionOfTrackInArrTrack])
+                favorite.setImage(UIImage(named: "favorite"), for: UIControl.State.normal)
+            }
+        } else {
+            favoriteFlag = false
+            favorite.setImage(UIImage(named: "favorite-heart-button (1)"), for: UIControl.State.normal)
+        }
+    }
+    
+    @IBAction func shuffleTrack(_ sender: Any) {
+        if shuffleTrackFlag == false {
+            shuffleTrackFlag = true
+            shuffle.setImage(UIImage(named: "random"), for: UIControl.State.normal)
+        } else {
+            shuffleTrackFlag = false
+            shuffle.setImage(UIImage(named: "shuffle-mode-arrows (1)"), for: UIControl.State.normal)
+        }
+    }
+    
+    @IBAction func option(_ sender: Any) {
+        
     }
 }

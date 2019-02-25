@@ -6,7 +6,7 @@ target 'Music' do
   use_frameworks!
   pod 'Alamofire'
   pod 'AlamofireObjectMapper'
-  pod 'Presentr'
+  pod 'FMDB'
   # Pods for Music
 
   target 'MusicTests' do
