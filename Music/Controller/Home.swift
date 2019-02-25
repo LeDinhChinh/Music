@@ -24,6 +24,7 @@ final class Home: UIViewController {
     private var uri: [String] = []
     private var nameArtist: [String] = []
     private var numberOfTrack = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         genreCollectionView.delegate = self
@@ -171,8 +172,10 @@ extension Home: UICollectionViewDataSource, UICollectionViewDelegate, UICollecti
             playerVC.genre = self.genre
             playerVC.currentPositionOfTrackInArrTrack = indexPath.row
             playerVC.numberOfTrack = numberOfTrack
+            playerVC.dataFromHomeVC = true
+            playerVC.dataFromFavoriteVC = false
             DispatchQueue.main.async {
-                playerVC.willPlayer()
+                playerVC.willPlayerWithDataFromHomeVC()
             }
             tabBarController?.selectedIndex = 2
         }

@@ -24,10 +24,9 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
     @IBOutlet weak private var shuffle: UIButton!
     @IBOutlet weak private var pauseOrPlayTrack: UIButton!
     @IBOutlet weak private var loop: UIButton!
-    @IBOutlet weak private var option: UIButton!
     
     var error = false
-    var numberOfTrack = 0
+    var numberOfTrack = -1
     var favoriteFlag = false
     var shuffleTrackFlag = false
     var artWork_url: [String] = []
@@ -35,23 +34,26 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
     var titles: [String] = []
     var uri: [String] = []
     var stringNameArtist: [String] = []
+    var arrFavoriteTracks = [FavoriteTracks]()
     var player: AVAudioPlayer?
     var currentPositionOfTrackInArrTrack = 0
+    
+    var dataFromHomeVC = false
+    var dataFromFavoriteVC = false
     private var loopAllTrack: Bool = false
     private var loopForOne: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
-    func willPlayer() {
+    
+    func willPlayerWithDataFromHomeVC() {
         if let url = URL(string: artWork_url[currentPositionOfTrackInArrTrack]) {
             let data = try? Data(contentsOf: url)
             trackImage.image = UIImage(data: data!)
         }
         nameTrack.text = titles[currentPositionOfTrackInArrTrack]
         nameArtist.text = stringNameArtist[currentPositionOfTrackInArrTrack]
-        
         let url = URL(string: uri[currentPositionOfTrackInArrTrack] + id_client)
         Alamofire.request(url!).responseObject { (response :DataResponse<Errors>) in
             if let value = response.value {
@@ -94,7 +96,57 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
                 self.present(alert, animated: true, completion: nil)
             }
         }
-        
+    }
+    
+    func willPlayerWithDataFromFavoriteVC() {
+        if let url = URL(string: arrFavoriteTracks[currentPositionOfTrackInArrTrack].url_image) {
+            let data = try? Data(contentsOf: url)
+            trackImage.image = UIImage(data: data!)
+        }
+        if let isPlaying = player?.isPlaying {
+            if isPlaying {
+                player?.stop()
+            }
+        }
+        nameTrack.text = arrFavoriteTracks[currentPositionOfTrackInArrTrack].titles
+        nameArtist.text = arrFavoriteTracks[currentPositionOfTrackInArrTrack].nameArtist
+        let url = URL(string: arrFavoriteTracks[currentPositionOfTrackInArrTrack].uri + id_client)
+        Alamofire.request(url!).responseObject { (response :DataResponse<Errors>) in
+            if let value = response.value {
+                if value.errors[0].error_message == "401 - Unauthorized" {
+                    self.error = true
+                    self.player?.stop()
+                    let alert = UIAlertController(title: "Error", message: "Error play music", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+            }
+            self.error = false
+            self.favorite.setImage(UIImage(named: "favorite"), for: UIControl.State.normal)
+            do {
+                let data = try Data(contentsOf: url!)
+                self.player = try AVAudioPlayer(data: data)
+                self.player?.delegate = self
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (Timer) in
+                    self.currentTimeTrack.text = self.intToHoursMinutesSeconds(seconds: (self.player?.currentTime)!)
+                    self.timeTrackSlide.value = Float((self.player?.currentTime)!)
+                }
+                self.timeTrackSlide.maximumValue = Float((self.player?.duration)!)
+                self.durationTimeTrack.text = self.intToHoursMinutesSeconds(seconds: (self.player?.duration)!)
+                self.player?.volume = self.volumeSlide.value
+                self.player?.play()
+                self.pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
+            } catch {
+                if (self.player?.isPlaying)! {
+                    self.player?.pause()
+                }
+                self.pauseOrPlayTrack.setImage(UIImage(named: "icons8-play-filled-50"), for: UIControl.State.normal)
+                let alert = UIAlertController(title: "Error", message: "This music cannot be played", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     func isTrackFavorite(favoriteTrack: [FavoriteTracks], url: String) -> Bool {
@@ -129,13 +181,16 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
         if error == true {
             return
         }
-        if (player?.isPlaying)! {
-            pauseOrPlayTrack.setImage(UIImage(named: "icons8-play-filled-50"), for: UIControl.State.normal)
-            player?.pause()
-        } else {
-            pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
-            player?.play()
+        if let isPlaying = player?.isPlaying {
+            if (isPlaying) {
+                pauseOrPlayTrack.setImage(UIImage(named: "icons8-play-filled-50"), for: UIControl.State.normal)
+                player?.pause()
+            } else {
+                pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
+                player?.play()
+            }
         }
+        
     }
     
     @IBAction func previousTrack(_ sender: Any) {
@@ -143,23 +198,32 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
             player?.stop()
         }
         if numberOfTrack > 0 {
-            if currentPositionOfTrackInArrTrack == 0 {
-                currentPositionOfTrackInArrTrack = uri.count - 1
-                DispatchQueue.main.async {
-                    self.willPlayer()
+            if dataFromHomeVC {
+                if currentPositionOfTrackInArrTrack == 0 {
+                    currentPositionOfTrackInArrTrack = uri.count - 1
+                    DispatchQueue.main.async {
+                        self.willPlayerWithDataFromHomeVC()
+                    }
+                } else {
+                    currentPositionOfTrackInArrTrack = currentPositionOfTrackInArrTrack - 1
+                    DispatchQueue.main.async {
+                        self.willPlayerWithDataFromHomeVC()
+                    }
+                    pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
                 }
-            } else if currentPositionOfTrackInArrTrack > uri.count {
-                currentPositionOfTrackInArrTrack = 0
-                DispatchQueue.main.async {
-                    self.willPlayer()
-                }
-                pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
             } else {
-                currentPositionOfTrackInArrTrack = currentPositionOfTrackInArrTrack - 1
-                DispatchQueue.main.async {
-                    self.willPlayer()
+                if currentPositionOfTrackInArrTrack == 0 {
+                    currentPositionOfTrackInArrTrack = arrFavoriteTracks.count - 1
+                    DispatchQueue.main.async {
+                        self.willPlayerWithDataFromFavoriteVC()
+                    }
+                } else {
+                    currentPositionOfTrackInArrTrack = currentPositionOfTrackInArrTrack - 1
+                    DispatchQueue.main.async {
+                        self.willPlayerWithDataFromFavoriteVC()
+                    }
+                    pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
                 }
-                pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
             }
         }
     }
@@ -169,30 +233,58 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
             player?.stop()
         }
         if numberOfTrack > 0 {
-            if loopForOne {
-                willPlayer()
-                return
-            }
-            if shuffleTrackFlag {
-                currentPositionOfTrackInArrTrack = Int.random(in: 0..<10)
-                willPlayer()
-                return
-            }
-            if currentPositionOfTrackInArrTrack >= uri.count - 1 {
-                if loopAllTrack == false {
+            if dataFromHomeVC {
+                if loopForOne {
+                    willPlayerWithDataFromHomeVC()
                     return
                 }
-                currentPositionOfTrackInArrTrack = 0
-                DispatchQueue.main.async {
-                    self.willPlayer()
+                if shuffleTrackFlag {
+                    currentPositionOfTrackInArrTrack = Int.random(in: 0..<10)
+                    willPlayerWithDataFromHomeVC()
+                    return
                 }
-                pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
+                if currentPositionOfTrackInArrTrack >= numberOfTrack {
+                    if loopAllTrack == false {
+                        return
+                    }
+                    currentPositionOfTrackInArrTrack = 0
+                    DispatchQueue.main.async {
+                        self.willPlayerWithDataFromHomeVC()
+                    }
+                    pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
+                } else {
+                    currentPositionOfTrackInArrTrack = currentPositionOfTrackInArrTrack + 1
+                    DispatchQueue.main.async {
+                        self.willPlayerWithDataFromHomeVC()
+                    }
+                    pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
+                }
             } else {
-                currentPositionOfTrackInArrTrack = currentPositionOfTrackInArrTrack + 1
-                DispatchQueue.main.async {
-                    self.willPlayer()
+                if loopForOne {
+                    willPlayerWithDataFromFavoriteVC()
+                    return
                 }
-                pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
+                if shuffleTrackFlag {
+                    currentPositionOfTrackInArrTrack = Int.random(in: 0..<10)
+                    willPlayerWithDataFromFavoriteVC()
+                    return
+                }
+                if currentPositionOfTrackInArrTrack >= arrFavoriteTracks.count - 1 {
+                    if loopAllTrack == false {
+                        return
+                    }
+                    currentPositionOfTrackInArrTrack = 0
+                    DispatchQueue.main.async {
+                        self.willPlayerWithDataFromFavoriteVC()
+                    }
+                    pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
+                } else {
+                    currentPositionOfTrackInArrTrack = currentPositionOfTrackInArrTrack + 1
+                    DispatchQueue.main.async {
+                        self.willPlayerWithDataFromFavoriteVC()
+                    }
+                    pauseOrPlayTrack.setImage(UIImage(named: "icons8-pause-filled-50"), for: UIControl.State.normal)
+                }
             }
         }
     }
@@ -212,15 +304,29 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
     }
     
     @IBAction func favoriteTrack(_ sender: Any) {
-        if favoriteFlag == false {
-            if numberOfTrack >= 0 {
-                favoriteFlag = true
-                DataLocal.insertRecore(artWork_url[currentPositionOfTrackInArrTrack], genre[currentPositionOfTrackInArrTrack], titles[currentPositionOfTrackInArrTrack], uri[currentPositionOfTrackInArrTrack], stringNameArtist[currentPositionOfTrackInArrTrack])
-                favorite.setImage(UIImage(named: "favorite"), for: UIControl.State.normal)
+        if dataFromHomeVC {
+            if favoriteFlag == false {
+                if numberOfTrack >= 0 {
+                    favoriteFlag = true
+                    DataLocal.insertRecore(artWork_url[currentPositionOfTrackInArrTrack], genre[currentPositionOfTrackInArrTrack], titles[currentPositionOfTrackInArrTrack], uri[currentPositionOfTrackInArrTrack], stringNameArtist[currentPositionOfTrackInArrTrack])
+                    favorite.setImage(UIImage(named: "favorite"), for: UIControl.State.normal)
+                }
+            } else {
+                favoriteFlag = false
+                favorite.setImage(UIImage(named: "favorite-heart-button (1)"), for: UIControl.State.normal)
             }
         } else {
-            favoriteFlag = false
-            favorite.setImage(UIImage(named: "favorite-heart-button (1)"), for: UIControl.State.normal)
+            if favoriteFlag == false {
+                if numberOfTrack >= 0 {
+                    favoriteFlag = true
+                    DataLocal.insertRecore(arrFavoriteTracks[currentPositionOfTrackInArrTrack].url_image, arrFavoriteTracks[currentPositionOfTrackInArrTrack].genre, arrFavoriteTracks[currentPositionOfTrackInArrTrack].titles, arrFavoriteTracks[currentPositionOfTrackInArrTrack].uri, arrFavoriteTracks[currentPositionOfTrackInArrTrack].nameArtist)
+                    favorite.setImage(UIImage(named: "favorite"), for: UIControl.State.normal)
+                }
+            } else {
+                favoriteFlag = false
+                DataLocal.removeData(uri: arrFavoriteTracks[currentPositionOfTrackInArrTrack].uri)
+                favorite.setImage(UIImage(named: "favorite-heart-button (1)"), for: UIControl.State.normal)
+            }
         }
     }
     
@@ -232,9 +338,5 @@ final class Player: UIViewController, AVAudioPlayerDelegate {
             shuffleTrackFlag = false
             shuffle.setImage(UIImage(named: "shuffle-mode-arrows (1)"), for: UIControl.State.normal)
         }
-    }
-    
-    @IBAction func option(_ sender: Any) {
-        
     }
 }

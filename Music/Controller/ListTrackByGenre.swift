@@ -21,6 +21,7 @@ final class ListTrackByGenre: UIViewController {
     var uri: [String] = []
     var nameArtist: [String] = []
     var bannerImg = ""
+    var numberOfTrack = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,7 @@ final class ListTrackByGenre: UIViewController {
             var titles: [String] = []
             var uri: [String] = []
             var nameArtist: [String] = []
+            var numberOfTrack = 0
             guard let value = response.value else {
                 return
             }
@@ -48,6 +50,7 @@ final class ListTrackByGenre: UIViewController {
                 titles.append(track.title)
                 uri.append(track.uri)
                 nameArtist.append(track.user?.full_name ?? "")
+                numberOfTrack = value.collection.count - 1
             }
             self.artWork_url = artWork_url
             self.genre = genre
@@ -55,6 +58,7 @@ final class ListTrackByGenre: UIViewController {
             self.uri = uri
             self.nameArtist = nameArtist
             self.listTrackByGenreTableView.reloadData()
+            self.numberOfTrack = numberOfTrack
         }
     }
 }
@@ -85,12 +89,16 @@ extension ListTrackByGenre: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let playerVC = self.tabBarController?.viewControllers?[2] as! Player
         playerVC.titles = self.titles
+        playerVC.genre = self.genre
         playerVC.stringNameArtist = self.nameArtist
         playerVC.artWork_url = self.artWork_url
         playerVC.uri = self.uri
         playerVC.currentPositionOfTrackInArrTrack = indexPath.row
+        playerVC.numberOfTrack = self.numberOfTrack
+        playerVC.dataFromHomeVC = true
+        playerVC.dataFromFavoriteVC = false
         DispatchQueue.main.async {
-            playerVC.willPlayer()
+            playerVC.willPlayerWithDataFromHomeVC()
         }
         tabBarController?.selectedIndex = 2
     }

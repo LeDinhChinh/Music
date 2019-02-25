@@ -59,4 +59,16 @@ open class DataLocal {
         database.close()
         return arrFavoriteTracks
     }
+    
+    class func removeData(uri: String) {
+        var check: Bool = false
+        let db: FMDatabase = FMDatabase.init(path: AppDelegate.sharedInstance.databasePath)
+        if db.open() {
+            let query: String = String.init(format: "DELETE FROM %@ WHERE %@ = ('%@')", TABLE_NAME, URI, uri)
+            check = db.executeUpdate(query, withArgumentsIn: [])
+            db.close()
+            return
+        }
+        print(check)
+    }
 }
